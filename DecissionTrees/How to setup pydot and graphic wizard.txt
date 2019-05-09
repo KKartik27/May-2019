@@ -4,6 +4,7 @@ Here is what you have to do it:
 1. Install pydot from https://anaconda.org/rmg/pydot
 
 2. Download graphic wizard from https://graphviz.gitlab.io/_pages/Download/Download_windows.html
+2.1 Install conda install python-graphviz from Anaconda prompt
 
 3. Install downloaded GraphicWizard
 
