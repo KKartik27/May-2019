@@ -1,14 +1,10 @@
 How to setup pydot and graphic wizard.
 Here is what you have to do it:
 
-1. Install pydot from https://anaconda.org/rmg/pydot
+1. pip install pydot  Or 1. Install pydot from https://anaconda.org/rmg/pydot
+2 Conda install python-graphviz from Anaconda prompt
 
-2. Download graphic wizard from https://graphviz.gitlab.io/_pages/Download/Download_windows.html
-2.1 Conda install python-graphviz from Anaconda prompt
-
-3. Install downloaded GraphicWizard
-
-4. Add a line of code on top of the python script as below:
+4(Optional). Add a line of code on top of the python script as below:
 import os
 os.environ["PATH"] += os.pathsep + 'C:/Program Files (x86)/Graphviz2.38/bin/'
 This path is nothing but where you have download.
