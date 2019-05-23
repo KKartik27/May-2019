@@ -39,14 +39,14 @@ bag_tree_estimator1.fit(X_train, y_train)
 bag_tree_estimator2 = ensemble.BaggingClassifier(base_estimator = dt_estimator, n_estimators = 5, random_state=2017)
 bag_grid = {'criterion':['entropy','gini']}
 
-bag_grid_estimator = model_selection.GridSearchCV(bag_tree_estimator2, bag_grid, n_jobs=6)
+bag_grid_estimator = model_selection.GridSearchCV(bag_tree_estimator2, bag_grid, cv=10, n_jobs=6)
 bag_grid_estimator.fit(X_train, y_train)
 
 #extracting all the trees build by random forest algorithm
 n_tree = 0
 for est in bag_tree_estimator1.estimators_: 
 #for est in bag_tree_estimator2.estimators_: 
-    dot_data = io.StringIO()
+    dot_data = io.StringIO() 
     #tmp = est.tree_
     tree.export_graphviz(est, out_file = dot_data, feature_names = X_train.columns)
     graph = pydot.graph_from_dot_data(dot_data.getvalue())#[0] 
