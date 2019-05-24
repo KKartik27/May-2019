@@ -64,6 +64,8 @@ rf.fit(X_train, y_train)
 features = pd.DataFrame({'feature':X_train.columns, 'importance':rf.feature_importances_})
 features.sort_values(by=['importance'], ascending=True, inplace=True)
 features.set_index('feature', inplace=True)
+#How to display plot:
+#Go to Menu Bar-->Tools-->Preferences-->IPython Console-->Graphics Tab-->Graphics backend-->Change Backend to Automatic
 features.plot(kind='barh', figsize=(30, 30))
 
 #threshold means, how  many number of features to be selected 
