@@ -88,4 +88,4 @@ X_test = titanic2[titanic_train.shape[0]:]
 X_test.shape
 X_test.info()
 
-titanic_test.to_csv('submission_HVoting.csv', columns=['PassengerId','Survived'],index=False)
+titanic_test.to_csv('submission_votingHard.csv', columns=['PassengerId','Survived'],index=False)
