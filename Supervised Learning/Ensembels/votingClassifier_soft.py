@@ -94,5 +94,5 @@ X_test.info()
 
 titanic_test['Survived'] = grid_voting_estimator.predict(X_test)
 
-titanic_test.to_csv('submission_3M.csv', columns=['PassengerId','Survived'],index=False)
+titanic_test.to_csv('submission_softVoting.csv', columns=['PassengerId','Survived'],index=False)
    
