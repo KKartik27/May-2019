@@ -37,7 +37,8 @@ bag_tree_estimator1.fit(X_train, y_train)
 
 #Alternative way with parameters and use GridSearchCV instead of cross_val_score
 bag_tree_estimator2 = ensemble.BaggingClassifier(base_estimator = dt_estimator, n_estimators = 5, random_state=2017)
-bag_grid = {'criterion':['entropy','gini']}
+#bag_grid = {'criterion':['entropy','gini']} #There is no criterion parameter for regular BaggingClassifier.
+bag_grid = {'n_estimators':[5, 6], 'base_estimator__max_depth':[3,4,5]}
 
 bag_grid_estimator = model_selection.GridSearchCV(bag_tree_estimator2, bag_grid, cv=10, n_jobs=6)
 bag_grid_estimator.fit(X_train, y_train)
