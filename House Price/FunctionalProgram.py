@@ -1,12 +1,13 @@
 import os
 import pandas as pd
 #For K Nearest Neighbors
-#from sklearn feature_selection
+from sklearn import neighbors, feature_selection
 from sklearn import preprocessing, ensemble
 from sklearn import model_selection, metrics
 import seaborn as sns
-#import matplotlib.pyplot as plt
+import matplotlib.pyplot as plt
 import numpy as np
+#sns.set_style('whitegrid') #Graphical representaton in a grid form
 import math
 
 def get_continuous_columns(df):
@@ -86,3 +87,118 @@ def fit_model(estimator, grid, X_train, y_train):
    print(grid_estimator.best_score_)
    print(grid_estimator.score(X_train, y_train))
    return grid_estimator.best_estimator_
+
+def feature_importances(estimator):
+    return estimator.feature_importances_
+
+def predict(estimator, X_test):
+    return estimator.predict(X_test)
+
+#to uncover the mismatch of levels between train and test data
+def merge(df1, df2):
+    return pd.concat([df1, df2])
+
+def split(df, ind):
+    return (df[0:ind], df[ind:])
+
+def viz_cont_cont(df, features, target):
+    for feature in features:
+        sns.jointplot(x = feature, y = target, data = df)
+        
+def viz_cat_cont_density(df, features, target):
+    for feature in features:
+        sns.FacetGrid(df, row=feature,size=8).map(sns.kdeplot, target).add_legend()
+        plt.xticks(rotation=45)
+             
+def viz_cat_cont_box(df, features, target):
+    for feature in features:
+        sns.boxplot(x = feature, y = target,  data = df)
+        plt.xticks(rotation=45)        
+
+def viz_cont(df, features):
+    for feature in features:
+        sns.distplot(df[feature],kde=False)
+
+def feature_selection_from_model(estimator, feature_data, target):
+    estimator.fit(feature_data, target)
+    
+    features = pd.DataFrame({'feature':feature_data.columns, 'importance':estimator.feature_importances_})
+    features.sort_values(by=['importance'], ascending=True, inplace=True)
+    features.set_index('feature', inplace=True)
+    features.plot(kind='barh', figsize=(20, 20))
+
+    fs_model = feature_selection.SelectFromModel(estimator, prefit=True)
+    return features, fs_model.transform(feature_data)
+
+os.chdir("D:/Data Science/Data")
+
+house_train = pd.read_csv("house_train.csv")
+house_train.shape
+house_train.info()
+
+house_test = pd.read_csv("house_test.csv")
+house_test.shape
+house_test.info()
+house_test['SalePrice'] = 0
+
+house_data = merge(house_train, house_test)
+house_data.shape
+house_data.info()
+
+print(get_continuous_columns(house_data))
+print(get_categorical_columns(house_data))
+
+#convert numerical columns to categorical type              
+features = ['MSSubClass']
+transform_cont_to_cat(house_data, features)
+
+#map string categoical values to numbers
+ordinal_features = ["ExterQual", "ExterCond", "BsmtQual", "BsmtCond", "GarageQual", "GarageCond", "PoolQC", "FireplaceQu", "KitchenQual", "HeatingQC"]
+quality_dict = {None: 0, "Po": 1, "Fa": 2, "TA": 3, "Gd": 4, "Ex": 5}
+transform_cat_to_cont(house_data, ordinal_features, quality_dict)
+
+#filter missing data columns
+missing_features = get_missing_features1(house_data)
+filter_features(house_data, missing_features)
+house_data.shape
+house_data.info()
+
+#explore relation among all continuous features
+corr = get_heat_map_corr(house_train)
+get_target_corr(corr, 'SalePrice')
+
+house_train, house_test = split(house_data, house_train.shape[0])
+house_train.shape
+house_test.shape
+
+features = ['SalePrice']
+viz_cont(house_train, features)
+
+#explore relationship of neighborhood to saleprice
+#Categoric to Continuous relation
+target = 'SalePrice'
+features = ['Neighborhood']
+viz_cat_cont_box(house_train, features, target)
+
+#explore relationship of livarea and totalbsmt to saleprice
+#features = ['GrLivArea']
+features = ['LotArea']
+viz_cont_cont(house_train, features, target)
+
+features_to_filter = ['Id']
+                               
+#do one-hot-encoding for all the categorical features
+house_train1 = one_hot_encode(house_train)
+house_train1.shape
+house_train1.info()
+
+#filter_features(house_train1, ['SalePrice','log_sale_price'])
+filter_features(house_train1, ['SalePrice'])
+X_train = house_train1
+y_train = house_train['SalePrice']
+
+X_train.shape
+#Step 1 
+rf_estimator = ensemble.RandomForestClassifier(n_estimators=50, verbose = 3)
+feature_imp_df, X_train1 = feature_selection_from_model(rf_estimator, X_train, y_train)
+#X_train1.shape
