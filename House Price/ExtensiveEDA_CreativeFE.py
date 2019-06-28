@@ -182,7 +182,7 @@ plt.scatter(built_year, garage_year, color='blue')
 #TODO: Predict only NA values
 plt.plot(built_year, regr.predict(built_year), color='red',linewidth=3)
 
-combined_data['GarageYrBlt'] = combined_data.apply(lambda row : int(regr.predict(row['YearBuilt']))if (row['GarageYrBlt'] == 'NA' and row['GarageType'] == 'NA') else int(row['GarageYrBlt']),axis=1)
+combined_data['GarageYrBlt'] = combined_data.apply(lambda row : int(regr.predict(row['YearBuilt']))if (row['GarageYrBlt'] == 'NA') else int(row['GarageYrBlt']),axis=1)
 combined_data['GarageYrBlt'].head(41)
 #combined_data = sqlContext.createDataFrame(combined_data)
 #combined_data.registerTempTable('tmp')
