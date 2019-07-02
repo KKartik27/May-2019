@@ -2,6 +2,11 @@ import os
 import pandas as pd
 import seaborn as sns
 
+#returns current working directory
+os.getcwd()
+#changes working directory
+os.chdir("D:\\Data Science\\Data")
+
 titanic_train = pd.read_csv("titanic_train.csv")
 
 #EDA
