@@ -1,11 +1,16 @@
+# -*- coding: utf-8 -*-
+"""
+@author: Sreenivas.J
+"""
+
 import os
 import pandas as pd
 #For K Nearest Neighbors
 from sklearn import neighbors, feature_selection
 from sklearn import preprocessing, ensemble
 from sklearn import model_selection, metrics
-import seaborn as sns
 import matplotlib.pyplot as plt
+import seaborn as sns
 import numpy as np
 #sns.set_style('whitegrid') #Graphical representaton in a grid form
 import math
@@ -49,10 +54,8 @@ def get_imputers(df, features):
             cat_features.append(feature)
     mean_imputer = preprocessing.Imputer()
     mean_imputer.fit(df[cont_features])
-    #Transform!!!
     mode_imputer = preprocessing.Imputer(strategy="most_frequent")
     mode_imputer.fit(df[cat_features])
-    
     return mean_imputer, mode_imputer
 
 def impute_missing_data(df, imputers):
@@ -64,8 +67,8 @@ def impute_missing_data(df, imputers):
 def get_heat_map_corr(df):
     corr = df.select_dtypes(include = ['number']).corr()
     sns.heatmap(corr, square=False)
-    #plt.xticks(rotation=70)
-    #plt.yticks(rotation=70)
+    plt.xticks(rotation=70)
+    plt.yticks(rotation=70)
     return corr
 
 def get_target_corr(corr, target):
@@ -109,7 +112,8 @@ def viz_cat_cont_density(df, features, target):
     for feature in features:
         sns.FacetGrid(df, row=feature,size=8).map(sns.kdeplot, target).add_legend()
         plt.xticks(rotation=45)
-             
+        
+        
 def viz_cat_cont_box(df, features, target):
     for feature in features:
         sns.boxplot(x = feature, y = target,  data = df)
@@ -127,8 +131,13 @@ def feature_selection_from_model(estimator, feature_data, target):
     features.set_index('feature', inplace=True)
     features.plot(kind='barh', figsize=(20, 20))
 
-    fs_model = feature_selection.SelectFromModel(estimator, prefit=True)
+    fs_model = feature_selection.SelectFromModel(estimator, threshold="mean", prefit=True)
     return features, fs_model.transform(feature_data)
+
+def get_scale_model(df) :
+    scaler = preprocessing.StandardScaler()
+    scaler.fit(df)
+    return scaler
 
 os.chdir("D:/Data Science/Data")
 
@@ -202,3 +211,24 @@ X_train.shape
 rf_estimator = ensemble.RandomForestClassifier(n_estimators=50, verbose = 3)
 feature_imp_df, X_train1 = feature_selection_from_model(rf_estimator, X_train, y_train)
 #X_train1.shape
+
+scaled_model = get_scale_model(X_train)
+X_train_scaled = scaled_model.transform(X_train)
+
+#==============================================================================
+# #Try printing all rows and columns in shell
+# pd.set_option('display.max_rows', None)
+# pd.set_option('display.max_columns', None)
+# print(X_train1)
+# # summarize transformed data
+# np.set_printoptions(precision=5)
+# print(X_train1[0:1460,:])
+# 
+#==============================================================================
+
+knn_estimator = neighbors.KNeighborsRegressor()
+knn_grid = {'n_neighbors':[5,10,15]}
+model = fit_model(knn_estimator, knn_grid, X_train_scaled, y_train)
+
+#Best score: 0.182414942974
+#.score: 0.17392101913392907
