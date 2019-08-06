@@ -7,8 +7,8 @@ files.upload()
 
 !pip install kaggle;
 
-!mkdir .kaggle/
-!mv kaggle.json .kaggle/
+!mkdir ~/.kaggle/
+!mv kaggle.json ~/.kaggle/
 #Alternatively you can use:
 #Copyng kaggle.json to .kaggle folder
 !cp kaggle.json ~/.kaggle/
