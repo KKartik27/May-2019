@@ -13,7 +13,7 @@ files.upload()
 #Copyng kaggle.json to .kaggle folder
 !cp kaggle.json ~/.kaggle/
 
-!chmod 600 /content/.kaggle/kaggle.json #Granting permissions
+!chmod 600 /root/.kaggle/kaggle.json #Granting permissions
 !kaggle config set -n path -v '/content' #Not required
 
 #Kaggle API
