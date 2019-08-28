@@ -112,7 +112,7 @@ output = Dense(2, activation='softmax')(inner)
 model = Model(inputs = input, outputs = output)
 print(model.summary())
 model.compile(Adam(lr=0.01), 'categorical_crossentropy', metrics=['accuracy'])
-
+ 
 save_weights = ModelCheckpoint('model.h5', monitor='val_loss', save_best_only=True)
 history = model.fit(X_train, y_train, verbose=1, epochs=epochs, batch_size=batch_size, 
                     callbacks=[save_weights], validation_split=0.1)
