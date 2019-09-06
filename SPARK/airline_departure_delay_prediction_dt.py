@@ -1,13 +1,14 @@
+####
+#dataset link1:
+#http://www.transtats.bts.gov/DL_SelectFields.asp?Table_ID=236&DB_Short_Name=On-Time
+
+#dataset link2:
+#http://packages.revolutionanalytics.com/datasets/AirOnTime87to12
+####
+
 from pyspark.ml import Pipeline
 from pyspark.ml.feature import StringIndexer, VectorAssembler, OneHotEncoderEstimator
 from pyspark.ml.classification import DecisionTreeClassifier
-####
-dataset link1:
-http://www.transtats.bts.gov/DL_SelectFields.asp?Table_ID=236&DB_Short_Name=On-Time
-
-dataset link2:
-http://packages.revolutionanalytics.com/datasets/AirOnTime87to12
-####
 
 from pyspark.ml.evaluation import BinaryClassificationEvaluator
 from pyspark.ml.tuning import CrossValidator, ParamGridBuilder
