@@ -1,0 +1,30 @@
+Googel cloud:
+Reference document: Ultimate guide to setting up a Google Cloud machine
+
+https://medium.com/@howkhang/ultimate-guide-to-setting-up-a-google-cloud-machine-for-fast-ai-version-2-f374208be43
+
+
+-Get to the Googel cloud -- and start VM
+--Once the Google VM is started
+-Go to start-->Google SDK Shell
+-At the prompt:
+gcloud compute ssh instance-1
+-Now the new puTTY shell will open
+source activate tensorflow_gpu (To activate Tensorflow on GCloud)
+jupyter notebook
+
+Open another Google SDK Shell terminal (or Google Cloud SDK Shell) on your local machine and run the following command for port forwarding:
+
+gcloud compute ssh instance-1 --ssh-flag=“-L” --ssh-flag=“8888:localhost:8888”
+Go to browser-->http://localhost:8888/tree
+Or http://<ip address provided Google VM>:8888/tree
+--It opens Jupyter notebook and password is "sreeni"
+
+-Turn Off/On VM on Google cloud:
+Go to Google cloud Console
+Click on Hamburger
+Go to Compute Engine
+Go to VM
+Turn on/off instance-1 by clicking elipses symbol
+
+
